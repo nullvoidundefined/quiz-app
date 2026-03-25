@@ -343,7 +343,12 @@ export default function App() {
       )}
 
       <header className="header">
-        <h1>{selectedApp?.icon} {selectedApp?.name} Quiz</h1>
+        <div className="header-top">
+          <h1>{selectedApp?.icon} {selectedApp?.name} Quiz</h1>
+          <button className="btn btn-secondary btn-small" onClick={() => setScreen(isSingleQuestion ? 'browse' : 'start')}>
+            Quit
+          </button>
+        </div>
         {!isSingleQuestion && (
           <>
             <div className="stats">
