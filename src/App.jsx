@@ -115,7 +115,7 @@ export default function App() {
     setError(null);
     setAllQuestions([]);
 
-    fetch(`/quizzes/${selectedAppId}.md`)
+    fetch(`${import.meta.env.BASE_URL}quizzes/${selectedAppId}.md`)
       .then((r) => {
         if (!r.ok) throw new Error('Failed to load quiz file');
         return r.text();
