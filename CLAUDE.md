@@ -23,8 +23,8 @@ Four screen states managed via `screen` state variable:
 
 Each question has two separate supplementary content blocks:
 
-- **Clarification** (`? ` prefix in markdown) — Explains the question's concepts and terminology. Opened via the `?` button. Must NOT hint at the correct answer. This is educational context about *what the question is asking*.
-- **Explanation** (`> ` prefix in markdown) — Explains *why* the correct answer is correct. Shown automatically on wrong answers; available via "Learn More" on correct answers.
+- **Clarification** (`? ` prefix in markdown) — Explains the question's concepts and terminology. Opened via the `?` button. Must NOT hint at the correct answer. This is educational context about _what the question is asking_.
+- **Explanation** (`> ` prefix in markdown) — Explains _why_ the correct answer is correct. Shown automatically on wrong answers; available via "Learn More" on correct answers.
 
 These are intentionally separate concerns — clarification helps you understand the question before answering; explanation teaches you after answering.
 
@@ -32,6 +32,7 @@ These are intentionally separate concerns — clarification helps you understand
 
 ```markdown
 **1. Question text here?**
+
 - A) Option
 - **B) Correct option (bolded)**
 - C) Option
@@ -58,13 +59,13 @@ From the browse screen, clicking "Test Me" on any question enters the quiz with 
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `src/App.jsx` | All screens, modals, state management |
-| `src/App.css` | All styles (dark theme, responsive) |
-| `src/parseQuiz.js` | Markdown parser + Fisher-Yates shuffle |
-| `src/main.jsx` | Vite entry point |
-| `public/quizzes/app-{1..8}.md` | Quiz content per app |
+| File                           | Purpose                                |
+| ------------------------------ | -------------------------------------- |
+| `src/App.jsx`                  | All screens, modals, state management  |
+| `src/App.css`                  | All styles (dark theme, responsive)    |
+| `src/parseQuiz.js`             | Markdown parser + Fisher-Yates shuffle |
+| `src/main.jsx`                 | Vite entry point                       |
+| `public/quizzes/app-{1..8}.md` | Quiz content per app                   |
 
 ## Decisions
 

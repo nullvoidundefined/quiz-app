@@ -17,7 +17,10 @@
 
 function convertMarkdown(text) {
   return text
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+    .replace(
+      /\[([^\]]+)\]\(([^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>',
+    )
     .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 
@@ -62,7 +65,14 @@ export function parseQuiz(markdown) {
     const clarification = convertMarkdown(clarificationLines.join(' ').trim());
 
     if (options.length === 4 && correctIndex !== -1) {
-      questions.push({ number, text, options, correctIndex, explanation, clarification });
+      questions.push({
+        number,
+        text,
+        options,
+        correctIndex,
+        explanation,
+        clarification,
+      });
     }
   }
 

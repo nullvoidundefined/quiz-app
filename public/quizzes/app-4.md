@@ -5,6 +5,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 ---
 
 **1. What PostgreSQL extension does the Document QA app use for vector similarity search?**
+
 - A) PostGIS
 - B) pg_trgm
 - **C) pgvector**
@@ -15,6 +16,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [pgvector](https://github.com/pgvector/pgvector) is a PostgreSQL extension that adds vector data types and similarity search operators. It stores embeddings as `vector(N)` columns and supports nearest-neighbor queries using operators like `<=>` (cosine distance), `<->` (L2 distance), and `<#>` (inner product). This eliminates the need for a separate vector database like Pinecone or Weaviate — everything stays in PostgreSQL.
 
 **2. What does RAG stand for, and what problem does it solve?**
+
 - A) Rapid API Gateway — it speeds up API responses
 - B) Runtime Aggregation Graph — it combines data from multiple sources
 - **C) Retrieval-Augmented Generation — it grounds LLM responses in specific documents to reduce hallucination**
@@ -25,6 +27,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [Retrieval-Augmented Generation (RAG)](https://docs.anthropic.com/en/docs/build-with-claude/retrieval-augmented-generation) retrieves relevant document chunks before generating an answer. The user's question is embedded, similar chunks are found via vector search, and those chunks are injected into Claude's context as source material. This grounds the response in actual documents rather than relying solely on the model's training data.
 
 **3. What is the purpose of "chunking" documents before embedding them?**
+
 - A) To compress the documents for faster storage
 - B) To encrypt the documents for security
 - **C) To split documents into smaller pieces that fit within embedding model token limits and improve retrieval precision**
@@ -35,6 +38,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Embedding models have token limits (typically 512-8192 tokens), and large documents exceed these limits. Chunking splits documents into overlapping segments so each piece can be individually embedded and retrieved. Smaller chunks also improve retrieval precision — a query about a specific topic will match a focused chunk better than an entire document. Overlap between chunks ensures context is not lost at boundaries.
 
 **4. How does the citation system in this application link answers back to source documents?**
+
 - A) By appending the full document text to every response
 - B) By returning a list of all documents in the database
 - **C) By tracking which retrieved chunks were used in the response and returning their document references and locations**
@@ -45,6 +49,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > The citation system records which chunks were retrieved and included in Claude's context. When the response is returned, each claim or section is linked back to the specific document chunk(s) that informed it — including the document name, page number, or section. This lets users verify the AI's claims against the original source material, which is critical for trust in document QA applications.
 
 **5. What distance metric is most commonly used with pgvector for text embedding similarity?**
+
 - A) Euclidean distance (`<->`)
 - **B) Cosine distance (`<=>`)**
 - C) Manhattan distance

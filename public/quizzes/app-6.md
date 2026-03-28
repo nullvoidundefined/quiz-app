@@ -5,6 +5,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 ---
 
 **1. What library does the Realtime AI Collaboration app use for bidirectional real-time communication?**
+
 - A) ws (native WebSockets)
 - B) Pusher
 - **C) Socket.IO**
@@ -15,6 +16,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [Socket.IO](https://socket.io/) provides bidirectional, event-based communication between the client and server. Unlike SSE (which is server-to-client only), Socket.IO enables both directions — users can send messages and receive AI updates in real time. It includes automatic reconnection, room-based broadcasting, and fallback to HTTP long-polling when WebSockets are unavailable.
 
 **2. What does "human-in-the-loop" mean in the context of this AI application?**
+
 - A) A human must manually start each AI request
 - B) A human reviews the code that builds the AI system
 - **C) The AI pauses at certain decision points and requires human approval or input before proceeding**
@@ -25,6 +27,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Human-in-the-loop (HITL) is a pattern where the AI system defers to a human for critical decisions, reviews, or approvals before taking action. In this application, when the AI proposes changes, edits, or actions, it can pause and broadcast a request for human approval via Socket.IO. The human reviews the proposal and either approves, rejects, or modifies it before the system continues. This is essential for high-stakes actions where AI errors are costly.
 
 **3. What Socket.IO concept is used to broadcast AI updates only to users working on the same project?**
+
 - A) Namespaces
 - **B) Rooms**
 - C) Channels
@@ -35,6 +38,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [Socket.IO rooms](https://socket.io/docs/v4/rooms/) are arbitrary groupings of sockets. When a user joins a project, their socket joins that project's room (e.g., `project:123`). Events like AI responses, approval requests, and status updates are broadcast to the room, so only users in that project receive them. Rooms are server-side only — clients cannot join rooms directly, they must request it through an event handler.
 
 **4. How does Socket.IO handle a client that temporarily loses internet connectivity?**
+
 - A) The connection is permanently closed and must be manually reestablished
 - B) Messages are lost and the client starts fresh
 - **C) Socket.IO automatically attempts to reconnect with exponential backoff**
@@ -45,6 +49,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Socket.IO's client library includes built-in [automatic reconnection](https://socket.io/docs/v4/client-options/#reconnection) with configurable exponential backoff. When the connection drops, the client attempts to reconnect at increasing intervals. Once reconnected, the application can re-sync state (e.g., re-joining rooms and fetching missed updates). Note that messages sent during disconnection are not automatically replayed — the application must handle this gap.
 
 **5. What transport does Socket.IO attempt first by default before upgrading?**
+
 - A) WebSockets first, then falls back to HTTP Long Polling if unavailable
 - B) WebSockets only, with no fallback
 - **C) HTTP Long Polling first, then upgrades to WebSockets**

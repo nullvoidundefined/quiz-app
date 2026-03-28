@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { parseQuiz, shuffle } from './parseQuiz';
+import { useCallback, useEffect, useState } from 'react';
+
 import './App.css';
+
+import { parseQuiz, shuffle } from './parseQuiz';
 
 function getLetterGrade(pct) {
   if (pct >= 90) return 'A';
@@ -11,21 +13,75 @@ function getLetterGrade(pct) {
 }
 
 function gradeColor(grade) {
-  return { A: '#22c55e', B: '#84cc16', C: '#eab308', D: '#f97316', F: '#ef4444' }[grade];
+  return {
+    A: '#22c55e',
+    B: '#84cc16',
+    C: '#eab308',
+    D: '#f97316',
+    F: '#ef4444',
+  }[grade];
 }
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
 const QUESTIONS_PER_SESSION = 20;
 
 const APPS = [
-  { id: 'app-1', name: 'Job Tracker AI', icon: '\ud83d\udcbc', desc: 'Structured extraction + Zod validation', ready: true },
-  { id: 'app-2', name: 'Link Saver AI Summarizer', icon: '\ud83d\udd17', desc: 'SSE streaming + Redis caching', ready: false },
-  { id: 'app-3', name: 'Async AI Content Pipeline', icon: '\u2699\ufe0f', desc: 'Tool calling + BullMQ async processing', ready: false },
-  { id: 'app-4', name: 'Document QA RAG', icon: '\ud83d\udcc4', desc: 'RAG with pgvector + citation system', ready: false },
-  { id: 'app-5', name: 'Multi-Tenant AI Assistant', icon: '\ud83c\udfe2', desc: 'Multi-tenant context scoping + summarization', ready: false },
-  { id: 'app-6', name: 'Realtime AI Collaboration', icon: '\u26a1', desc: 'Human-in-the-loop + Socket.IO real-time', ready: false },
-  { id: 'app-7', name: 'AI Research Assistant', icon: '\ud83d\udd2c', desc: 'Compound AI: all patterns from 1\u20136 combined', ready: false },
-  { id: 'app-8', name: 'Agentic Travel Agent', icon: '\u2708\ufe0f', desc: 'Agentic tool-use loop with real external APIs', ready: true },
+  {
+    id: 'app-1',
+    name: 'Job Tracker AI',
+    icon: '\ud83d\udcbc',
+    desc: 'Structured extraction + Zod validation',
+    ready: true,
+  },
+  {
+    id: 'app-2',
+    name: 'Link Saver AI Summarizer',
+    icon: '\ud83d\udd17',
+    desc: 'SSE streaming + Redis caching',
+    ready: false,
+  },
+  {
+    id: 'app-3',
+    name: 'Async AI Content Pipeline',
+    icon: '\u2699\ufe0f',
+    desc: 'Tool calling + BullMQ async processing',
+    ready: false,
+  },
+  {
+    id: 'app-4',
+    name: 'Document QA RAG',
+    icon: '\ud83d\udcc4',
+    desc: 'RAG with pgvector + citation system',
+    ready: false,
+  },
+  {
+    id: 'app-5',
+    name: 'Multi-Tenant AI Assistant',
+    icon: '\ud83c\udfe2',
+    desc: 'Multi-tenant context scoping + summarization',
+    ready: false,
+  },
+  {
+    id: 'app-6',
+    name: 'Realtime AI Collaboration',
+    icon: '\u26a1',
+    desc: 'Human-in-the-loop + Socket.IO real-time',
+    ready: false,
+  },
+  {
+    id: 'app-7',
+    name: 'AI Research Assistant',
+    icon: '\ud83d\udd2c',
+    desc: 'Compound AI: all patterns from 1\u20136 combined',
+    ready: false,
+  },
+  {
+    id: 'app-8',
+    name: 'Agentic Travel Agent',
+    icon: '\u2708\ufe0f',
+    desc: 'Agentic tool-use loop with real external APIs',
+    ready: true,
+  },
 ];
 
 function ClarificationModal({ question, onClose }) {
@@ -38,21 +94,21 @@ function ClarificationModal({ question, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close">
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='modal' onClick={(e) => e.stopPropagation()}>
+        <button className='modal-close' onClick={onClose} aria-label='Close'>
           &times;
         </button>
-        <div className="modal-header">
-          <span className="modal-icon">&#128161;</span>
+        <div className='modal-header'>
+          <span className='modal-icon'>&#128161;</span>
           <h3>What is this asking?</h3>
         </div>
-        <p className="modal-question">{question.text}</p>
+        <p className='modal-question'>{question.text}</p>
         <div
-          className="modal-clarification"
+          className='modal-clarification'
           dangerouslySetInnerHTML={{ __html: question.clarification }}
         />
-        <button className="btn modal-btn" onClick={onClose}>
+        <button className='btn modal-btn' onClick={onClose}>
           Got it
         </button>
       </div>
@@ -70,24 +126,28 @@ function ExplanationModal({ question, onClose }) {
   }, [onClose]);
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose} aria-label="Close">
+    <div className='modal-overlay' onClick={onClose}>
+      <div className='modal' onClick={(e) => e.stopPropagation()}>
+        <button className='modal-close' onClick={onClose} aria-label='Close'>
           &times;
         </button>
-        <div className="modal-header">
-          <span className="modal-icon">&#128218;</span>
+        <div className='modal-header'>
+          <span className='modal-icon'>&#128218;</span>
           <h3>Why this answer?</h3>
         </div>
-        <p className="modal-question">{question.text}</p>
-        <p className="modal-answer">
-          Correct answer: <strong>{OPTION_LETTERS[question.correctIndex]}) {question.options[question.correctIndex].replace(/^[A-D]\)\s*/, '')}</strong>
+        <p className='modal-question'>{question.text}</p>
+        <p className='modal-answer'>
+          Correct answer:{' '}
+          <strong>
+            {OPTION_LETTERS[question.correctIndex]}){' '}
+            {question.options[question.correctIndex].replace(/^[A-D]\)\s*/, '')}
+          </strong>
         </p>
         <div
-          className="modal-explanation"
+          className='modal-explanation'
           dangerouslySetInnerHTML={{ __html: question.explanation }}
         />
-        <button className="btn modal-btn" onClick={onClose}>
+        <button className='btn modal-btn' onClick={onClose}>
           Got it
         </button>
       </div>
@@ -160,56 +220,64 @@ export default function App() {
   // --- Start Screen ---
   if (screen === 'start') {
     return (
-      <div className="container">
-        <div className="card start-card">
-          <div className="start-icon">{selectedApp?.icon}</div>
+      <div className='container'>
+        <div className='card start-card'>
+          <div className='start-icon'>{selectedApp?.icon}</div>
           <h1>Fullstack AI Quiz</h1>
-          <p className="start-description">
+          <p className='start-description'>
             Test your knowledge of the apps in this portfolio — architecture,
             tools, APIs, patterns, and more.
           </p>
 
-          <div className="app-selector">
-            <label className="app-selector-label" htmlFor="app-select">Choose an app</label>
+          <div className='app-selector'>
+            <label className='app-selector-label' htmlFor='app-select'>
+              Choose an app
+            </label>
             <select
-              id="app-select"
-              className="app-select"
+              id='app-select'
+              className='app-select'
               value={selectedAppId}
               onChange={(e) => setSelectedAppId(e.target.value)}
             >
               {APPS.map((app) => (
                 <option key={app.id} value={app.id} disabled={!app.ready}>
-                  {app.icon} App {app.id.split('-')[1]}: {app.name}{app.ready ? '' : ' (coming soon)'}
+                  {app.icon} App {app.id.split('-')[1]}: {app.name}
+                  {app.ready ? '' : ' (coming soon)'}
                 </option>
               ))}
             </select>
-            <p className="app-select-desc">{selectedApp?.desc}</p>
+            <p className='app-select-desc'>{selectedApp?.desc}</p>
           </div>
 
-          {loading && <p className="start-loading">Loading questions...</p>}
-          {error && <p className="error">{error}</p>}
+          {loading && <p className='start-loading'>Loading questions...</p>}
+          {error && <p className='error'>{error}</p>}
 
           {!loading && !error && allQuestions.length > 0 && (
             <>
-              <div className="start-details">
-                <div className="start-detail">
-                  <span className="start-detail-value">{sessionSize}</span>
-                  <span className="start-detail-label">Questions</span>
+              <div className='start-details'>
+                <div className='start-detail'>
+                  <span className='start-detail-value'>{sessionSize}</span>
+                  <span className='start-detail-label'>Questions</span>
                 </div>
-                <div className="start-detail">
-                  <span className="start-detail-value">{allQuestions.length}</span>
-                  <span className="start-detail-label">Question Pool</span>
+                <div className='start-detail'>
+                  <span className='start-detail-value'>
+                    {allQuestions.length}
+                  </span>
+                  <span className='start-detail-label'>Question Pool</span>
                 </div>
-                <div className="start-detail">
-                  <span className="start-detail-value">A–F</span>
-                  <span className="start-detail-label">Grading</span>
+                <div className='start-detail'>
+                  <span className='start-detail-value'>A–F</span>
+                  <span className='start-detail-label'>Grading</span>
                 </div>
               </div>
-              <div className="start-actions">
-                <button className="btn start-btn" onClick={handleStart}>
+              <div className='start-actions'>
+                <button className='btn start-btn' onClick={handleStart}>
                   Start Quiz
                 </button>
-                <button className="btn btn-secondary start-btn-secondary" onClick={() => setScreen('browse')}>
+                <button
+                  className='btn btn-secondary start-btn-secondary'
+                  onClick={() => setScreen('browse')}
+                >
                   Browse Questions
                 </button>
               </div>
@@ -223,39 +291,59 @@ export default function App() {
   // --- Browse Screen ---
   if (screen === 'browse') {
     return (
-      <div className="container">
+      <div className='container'>
         {clarifyQuestion && (
-          <ClarificationModal question={clarifyQuestion} onClose={closeClarify} />
+          <ClarificationModal
+            question={clarifyQuestion}
+            onClose={closeClarify}
+          />
         )}
         {explainQuestion && (
           <ExplanationModal question={explainQuestion} onClose={closeExplain} />
         )}
 
-        <header className="browse-header">
-          <button className="btn btn-secondary browse-back" onClick={() => setScreen('start')}>
+        <header className='browse-header'>
+          <button
+            className='btn btn-secondary browse-back'
+            onClick={() => setScreen('start')}
+          >
             &larr; Back
           </button>
-          <h1>{selectedApp?.icon} {selectedApp?.name} — All Questions</h1>
-          <p className="browse-subtitle">{allQuestions.length} questions. Click any question to quiz yourself on it.</p>
+          <h1>
+            {selectedApp?.icon} {selectedApp?.name} — All Questions
+          </h1>
+          <p className='browse-subtitle'>
+            {allQuestions.length} questions. Click any question to quiz yourself
+            on it.
+          </p>
         </header>
 
-        <div className="browse-list">
+        <div className='browse-list'>
           {allQuestions.map((q, i) => (
-            <div key={q.number} className="browse-item">
-              <div className="browse-item-number">{q.number}</div>
-              <div className="browse-item-content">
-                <p className="browse-item-text">{q.text}</p>
-                <div className="browse-item-actions">
-                  <button className="btn btn-small" onClick={() => handlePickQuestion(q)}>
+            <div key={q.number} className='browse-item'>
+              <div className='browse-item-number'>{q.number}</div>
+              <div className='browse-item-content'>
+                <p className='browse-item-text'>{q.text}</p>
+                <div className='browse-item-actions'>
+                  <button
+                    className='btn btn-small'
+                    onClick={() => handlePickQuestion(q)}
+                  >
                     Test Me
                   </button>
                   {q.clarification && (
-                    <button className="btn btn-small btn-secondary" onClick={() => setClarifyQuestion(q)}>
+                    <button
+                      className='btn btn-small btn-secondary'
+                      onClick={() => setClarifyQuestion(q)}
+                    >
                       ?
                     </button>
                   )}
                   {q.explanation && (
-                    <button className="btn btn-small btn-secondary" onClick={() => setExplainQuestion(q)}>
+                    <button
+                      className='btn btn-small btn-secondary'
+                      onClick={() => setExplainQuestion(q)}
+                    >
                       Answer
                     </button>
                   )}
@@ -274,26 +362,32 @@ export default function App() {
     const grade = getLetterGrade(pct);
 
     return (
-      <div className="container">
-        <div className="card finished-card">
+      <div className='container'>
+        <div className='card finished-card'>
           <h1>Quiz Complete</h1>
-          <p className="finished-app-name">{selectedApp?.icon} {selectedApp?.name}</p>
-          <div className="final-grade" style={{ color: gradeColor(grade) }}>
+          <p className='finished-app-name'>
+            {selectedApp?.icon} {selectedApp?.name}
+          </p>
+          <div className='final-grade' style={{ color: gradeColor(grade) }}>
             {grade}
           </div>
-          <p className="final-score">
+          <p className='final-score'>
             {score} / {questions.length} correct ({pct}%)
           </p>
           {questions.length > 1 && (
-            <p className="final-pool">
-              {questions.length} questions drawn from a pool of {allQuestions.length}
+            <p className='final-pool'>
+              {questions.length} questions drawn from a pool of{' '}
+              {allQuestions.length}
             </p>
           )}
-          <div className="finished-actions">
-            <button className="btn" onClick={handleStart}>
+          <div className='finished-actions'>
+            <button className='btn' onClick={handleStart}>
               New Quiz
             </button>
-            <button className="btn btn-secondary" onClick={() => setScreen('start')}>
+            <button
+              className='btn btn-secondary'
+              onClick={() => setScreen('start')}
+            >
               Back to Start
             </button>
           </div>
@@ -303,7 +397,12 @@ export default function App() {
   }
 
   // --- Quiz Screen ---
-  if (!questions.length) return <div className="container"><p>Loading...</p></div>;
+  if (!questions.length)
+    return (
+      <div className='container'>
+        <p>Loading...</p>
+      </div>
+    );
 
   const q = questions[current];
   const pct = answered > 0 ? Math.round((score / answered) * 100) : 100;
@@ -334,7 +433,7 @@ export default function App() {
   }
 
   return (
-    <div className="container">
+    <div className='container'>
       {clarifyQuestion && (
         <ClarificationModal question={clarifyQuestion} onClose={closeClarify} />
       )}
@@ -342,52 +441,62 @@ export default function App() {
         <ExplanationModal question={explainQuestion} onClose={closeExplain} />
       )}
 
-      <header className="header">
-        <div className="header-top">
-          <h1>{selectedApp?.icon} {selectedApp?.name} Quiz</h1>
-          <button className="btn btn-secondary btn-small" onClick={() => setScreen(isSingleQuestion ? 'browse' : 'start')}>
+      <header className='header'>
+        <div className='header-top'>
+          <h1>
+            {selectedApp?.icon} {selectedApp?.name} Quiz
+          </h1>
+          <button
+            className='btn btn-secondary btn-small'
+            onClick={() => setScreen(isSingleQuestion ? 'browse' : 'start')}
+          >
             Quit
           </button>
         </div>
         {!isSingleQuestion && (
           <>
-            <div className="stats">
-              <span className="stat">
+            <div className='stats'>
+              <span className='stat'>
                 Question {current + 1} / {questions.length}
               </span>
-              <span className="stat">
+              <span className='stat'>
                 Score: {score}/{answered}
               </span>
-              <span className="grade-badge" style={{ background: gradeColor(grade) }}>
+              <span
+                className='grade-badge'
+                style={{ background: gradeColor(grade) }}
+              >
                 {grade}
               </span>
             </div>
-            <div className="progress-bar">
+            <div className='progress-bar'>
               <div
-                className="progress-fill"
-                style={{ width: `${((current + (showResult ? 1 : 0)) / questions.length) * 100}%` }}
+                className='progress-fill'
+                style={{
+                  width: `${((current + (showResult ? 1 : 0)) / questions.length) * 100}%`,
+                }}
               />
             </div>
           </>
         )}
       </header>
 
-      <div className="card">
-        <div className="question-row">
-          <h2 className="question-text">{q.text}</h2>
+      <div className='card'>
+        <div className='question-row'>
+          <h2 className='question-text'>{q.text}</h2>
           {q.clarification && (
             <button
-              className="hint-btn"
+              className='hint-btn'
               onClick={() => setClarifyQuestion(q)}
-              aria-label="Explain this question"
-              title="What does this question mean?"
+              aria-label='Explain this question'
+              title='What does this question mean?'
             >
               ?
             </button>
           )}
         </div>
 
-        <div className="options">
+        <div className='options'>
           {q.options.map((opt, i) => {
             let cls = 'option';
             if (showResult) {
@@ -398,23 +507,34 @@ export default function App() {
 
             return (
               <button key={i} className={cls} onClick={() => handleSelect(i)}>
-                <span className="option-letter">{OPTION_LETTERS[i]}</span>
-                <span className="option-text">{opt.replace(/^[A-D]\)\s*/, '')}</span>
+                <span className='option-letter'>{OPTION_LETTERS[i]}</span>
+                <span className='option-text'>
+                  {opt.replace(/^[A-D]\)\s*/, '')}
+                </span>
               </button>
             );
           })}
         </div>
 
         {showResult && (
-          <div className={`feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`}>
-            <p>{isCorrect ? 'Correct!' : `Incorrect — the answer is ${OPTION_LETTERS[q.correctIndex]}.`}</p>
-            <div className="feedback-actions">
+          <div
+            className={`feedback ${isCorrect ? 'feedback-correct' : 'feedback-incorrect'}`}
+          >
+            <p>
+              {isCorrect
+                ? 'Correct!'
+                : `Incorrect — the answer is ${OPTION_LETTERS[q.correctIndex]}.`}
+            </p>
+            <div className='feedback-actions'>
               {q.explanation && (
-                <button className="btn btn-secondary" onClick={() => setExplainQuestion(q)}>
+                <button
+                  className='btn btn-secondary'
+                  onClick={() => setExplainQuestion(q)}
+                >
                   {isCorrect ? 'Learn More' : 'Why?'}
                 </button>
               )}
-              <button className="btn" onClick={handleNext}>
+              <button className='btn' onClick={handleNext}>
                 {isSingleQuestion
                   ? 'Back to Questions'
                   : current + 1 < questions.length

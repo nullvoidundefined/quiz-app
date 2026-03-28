@@ -5,6 +5,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 ---
 
 **1. What job queue library does the Content Pipeline use for async background processing?**
+
 - A) Agenda
 - B) Kue
 - **C) BullMQ**
@@ -15,6 +16,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [BullMQ](https://docs.bullmq.io/) is a Node.js message queue built on top of Redis. It provides reliable job processing with features like retries, backoff, rate limiting, job priorities, and concurrency control. The Content Pipeline uses BullMQ to offload long-running AI tasks (like content generation and transformation) to a separate worker process so the API can respond immediately.
 
 **2. What is "tool calling" in the context of the Anthropic Claude API?**
+
 - A) Calling external REST APIs from the frontend
 - **B) Claude requesting to execute specific functions defined in the API request, with structured arguments**
 - C) Using command-line tools to interact with Claude
@@ -25,6 +27,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [Tool calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) (also called function calling) allows Claude to request the execution of functions you define. You pass tool definitions (name, description, input schema) in the API request. When Claude decides it needs external data or actions, it returns a `tool_use` content block with the tool name and structured arguments. Your application executes the tool and sends the result back to Claude for further processing.
 
 **3. What is the role of the worker process in this application's architecture?**
+
 - A) It serves the frontend static files
 - B) It handles user authentication
 - **C) It consumes jobs from the BullMQ queue and processes them independently of the API server**
@@ -35,6 +38,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > The worker is a separate Node.js process (in `packages/worker`) that connects to the same Redis instance as the API server. It listens for jobs on BullMQ queues and processes them asynchronously — running Claude API calls, tool executions, and content transformations. This separation means the API server can enqueue a job and respond to the client immediately, without blocking on long-running AI operations.
 
 **4. What Redis data structure does BullMQ use internally to manage job queues?**
+
 - A) Redis Sets
 - B) Redis Strings
 - C) Redis Hashes only
@@ -45,6 +49,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > BullMQ uses [Redis Streams](https://redis.io/docs/data-types/streams/) (introduced in Redis 5.0) as its primary data structure for job processing, along with Redis Lists for certain queue operations. Streams provide consumer groups, acknowledgment, and message persistence — features that make BullMQ reliable even if a worker crashes mid-job. See the [BullMQ architecture docs](https://docs.bullmq.io/guide/architecture).
 
 **5. How does the API server communicate job status back to the client after enqueuing a task?**
+
 - A) The client polls a REST endpoint with the job ID
 - B) The server sends a WebSocket message when complete
 - **C) The client can poll a job status endpoint, or the application uses SSE to stream progress**

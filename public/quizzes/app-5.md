@@ -5,6 +5,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 ---
 
 **1. What does "multi-tenant context scoping" mean in this application?**
+
 - A) Running separate server instances for each tenant
 - B) Using different LLM models for different tenants
 - **C) Ensuring each tenant's data and conversation context is isolated so one tenant never sees another's information**
@@ -15,6 +16,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Multi-tenant context scoping ensures strict data isolation between tenants (organizations or workspaces). Every database query includes a `tenant_id` filter, every conversation loads only that tenant's history, and Claude's context window never mixes data from different tenants. This is enforced at the query level and often also via PostgreSQL Row-Level Security (RLS) policies, providing defense-in-depth.
 
 **2. What is conversation summarization used for in this application?**
+
 - A) Generating titles for conversation threads
 - B) Creating user-facing bullet-point recaps
 - **C) Compressing older conversation history to fit within Claude's context window while preserving key information**
@@ -25,6 +27,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > As conversations grow long, they can exceed Claude's context window limit. Conversation summarization compresses older messages into a concise summary that preserves key facts, decisions, and context. The application sends the summary plus recent messages to Claude, rather than the entire history. This keeps the effective context window manageable while maintaining conversational coherence. See [Anthropic's long context tips](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching).
 
 **3. What authentication system does this application use?**
+
 - A) Auth0
 - B) NextAuth.js
 - **C) Supabase Auth via @supabase/ssr**
@@ -35,6 +38,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > All apps in the portfolio use [Supabase Auth](https://supabase.com/docs/guides/auth) with the `@supabase/ssr` package for server-side authentication in Next.js. Supabase Auth provides JWT-based sessions, social login providers, and Row-Level Security integration with PostgreSQL. The `@supabase/ssr` package handles cookie-based session management for both server components and API routes.
 
 **4. How does the application determine which tenant a user belongs to?**
+
 - A) By checking the subdomain of the request URL
 - B) By reading a tenant cookie set during login
 - **C) Through the authenticated user's profile, which maps to a tenant via a database relationship**
@@ -45,6 +49,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > After authentication, the user's JWT contains their user ID. The application looks up the user's tenant association in the database (typically a `users` table with a `tenant_id` column or a junction table for multi-tenant membership). This tenant ID is then used to scope all subsequent database queries and AI context loading for that request.
 
 **5. What strategy prevents a long-running conversation from exceeding Claude's context window?**
+
 - A) Deleting old messages after a fixed count
 - B) Splitting the conversation across multiple Claude API calls
 - **C) Summarizing older messages into a compressed context and prepending it to recent messages**

@@ -5,6 +5,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 ---
 
 **1. What library does the Job Tracker AI use for runtime validation of structured data extracted by Claude?**
+
 - A) Joi
 - B) Yup
 - **C) Zod**
@@ -15,6 +16,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > [Zod](https://zod.dev/) is a TypeScript-first schema declaration and validation library. When Claude extracts structured job data (title, company, salary, etc.) from unstructured text, the raw output is validated against a Zod schema before being persisted. This catches hallucinated fields, wrong types, and missing required values at runtime — not just at compile time.
 
 **2. What does "structured extraction" mean in the context of this application?**
+
 - A) Parsing HTML with a DOM parser
 - B) Converting CSV files to JSON
 - **C) Using an LLM to pull typed fields from unstructured text**
@@ -25,6 +27,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Structured extraction uses Claude to read unstructured input (like a pasted job posting or email) and return a JSON object with specific typed fields — job title, company name, salary range, location, etc. The key insight is that the LLM acts as a flexible parser that understands natural language, unlike regex or rule-based parsers that break on format variations.
 
 **3. How does the application ensure Claude returns valid JSON rather than freeform text?**
+
 - A) Fine-tuning the model on JSON examples
 - **B) Using a system prompt that instructs JSON output, then validating with Zod**
 - C) Using the `response_format` parameter set to `json_object`
@@ -35,6 +38,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > The application sends a system prompt instructing Claude to respond in a specific JSON structure, then parses and validates the response with Zod. If validation fails, the application can retry or return an error. This prompt-plus-validation pattern is more reliable than hoping the model always produces valid output. See the [Anthropic structured output docs](https://docs.anthropic.com/en/docs/build-with-claude/structured-output) for guidance.
 
 **4. What happens when a Zod schema validation fails on Claude's extracted output?**
+
 - A) The raw output is saved anyway with a warning flag
 - B) The application crashes with an unhandled error
 - **C) Zod throws a ZodError with detailed information about which fields failed validation**
@@ -45,6 +49,7 @@ Each question has four options. Only one is correct (marked with **bold**).
 > Zod's `.parse()` method throws a `ZodError` when validation fails. This error contains an `issues` array describing exactly which fields failed and why (wrong type, missing required field, value out of range, etc.). The application catches this error and can use the details to retry the extraction, return a meaningful error to the user, or log the failure for debugging. See the [Zod error handling docs](https://zod.dev/error-handling).
 
 **5. What database hosts the PostgreSQL instance for this application?**
+
 - A) Supabase Database
 - B) Railway Postgres
 - **C) Neon**
