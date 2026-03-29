@@ -1,3 +1,4 @@
+import DOMPurify from 'dompurify';
 import { useCallback, useEffect, useState } from 'react';
 
 import './App.css';
@@ -106,7 +107,8 @@ function ClarificationModal({ question, onClose }) {
         <p className='modal-question'>{question.text}</p>
         <div
           className='modal-clarification'
-          dangerouslySetInnerHTML={{ __html: question.clarification }}
+          /* Content source: self-authored quiz markdown, not user input */
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(question.clarification) }}
         />
         <button className='btn modal-btn' onClick={onClose}>
           Got it
@@ -145,7 +147,8 @@ function ExplanationModal({ question, onClose }) {
         </p>
         <div
           className='modal-explanation'
-          dangerouslySetInnerHTML={{ __html: question.explanation }}
+          /* Content source: self-authored quiz markdown, not user input */
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(question.explanation) }}
         />
         <button className='btn modal-btn' onClick={onClose}>
           Got it
