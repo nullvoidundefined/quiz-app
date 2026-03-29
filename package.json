@@ -1,36 +1,38 @@
 {
-  "name": "quiz-app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "dompurify": "^3.3.3",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.39.4",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^9.39.4",
-    "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.5.2",
-    "eslint-plugin-security": "^3.0.0",
-    "eslint-plugin-unused-imports": "^4.1.4",
-    "globals": "^17.4.0",
-    "prettier": "^3.8.1",
-    "vite": "^8.0.1"
-  }
+    "name": "quiz-app",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "lint": "eslint --config eslint.config.bottomlessmargaritas.js .",
+        "lint:fix": "eslint --config eslint.config.bottomlessmargaritas.js . --fix",
+        "format": "prettier --config prettier.config.bottomlessmargaritas.js --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+        "format:check": "prettier --config prettier.config.bottomlessmargaritas.js --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "dompurify": "^3.3.3",
+        "react": "^19.2.4",
+        "react-dom": "^19.2.4"
+    },
+    "devDependencies": {
+        "@bottomlessmargaritas/claude-architecture-prompts": "^2.1.0",
+        "@bottomlessmargaritas/formatting-configs": "^2.1.0",
+        "@eslint/js": "^9.39.4",
+        "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+        "@types/react": "^19.2.14",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.1",
+        "eslint": "^9.39.4",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-plugin-react-hooks": "^7.0.1",
+        "eslint-plugin-react-refresh": "^0.5.2",
+        "eslint-plugin-security": "^3.0.0",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        "globals": "^17.4.0",
+        "prettier": "^3.8.1",
+        "vite": "^8.0.1"
+    }
 }
