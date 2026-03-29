@@ -4,27 +4,15 @@ import { useCallback, useEffect, useState } from 'react';
 import './App.css';
 
 import { parseQuiz, shuffle } from './parseQuiz';
-
-function getLetterGrade(pct) {
-  if (pct >= 90) return 'A';
-  if (pct >= 80) return 'B';
-  if (pct >= 70) return 'C';
-  if (pct >= 60) return 'D';
-  return 'F';
-}
-
-function gradeColor(grade) {
-  return {
-    A: '#22c55e',
-    B: '#84cc16',
-    C: '#eab308',
-    D: '#f97316',
-    F: '#ef4444',
-  }[grade];
-}
+import {
+  computePercentage,
+  computeSessionSize,
+  getLetterGrade,
+  gradeColor,
+  QUESTIONS_PER_SESSION,
+} from './quizLogic';
 
 const OPTION_LETTERS = ['A', 'B', 'C', 'D'];
-const QUESTIONS_PER_SESSION = 20;
 
 const APPS = [
   {
@@ -198,7 +186,7 @@ export default function App() {
   const closeExplain = useCallback(() => setExplainQuestion(null), []);
 
   const selectedApp = APPS.find((a) => a.id === selectedAppId);
-  const sessionSize = Math.min(QUESTIONS_PER_SESSION, allQuestions.length);
+  const sessionSize = computeSessionSize(allQuestions.length);
 
   function handleStart() {
     setQuestions(shuffle(allQuestions).slice(0, sessionSize));
@@ -361,7 +349,7 @@ export default function App() {
 
   // --- Finished Screen ---
   if (screen === 'finished') {
-    const pct = answered > 0 ? Math.round((score / answered) * 100) : 100;
+    const pct = computePercentage(score, answered);
     const grade = getLetterGrade(pct);
 
     return (
@@ -408,7 +396,7 @@ export default function App() {
     );
 
   const q = questions[current];
-  const pct = answered > 0 ? Math.round((score / answered) * 100) : 100;
+  const pct = computePercentage(score, answered);
   const grade = getLetterGrade(pct);
   const isCorrect = selected === q.correctIndex;
   const isSingleQuestion = questions.length === 1;
