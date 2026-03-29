@@ -1,7 +1,8 @@
-import DOMPurify from 'dompurify';
 import { useCallback, useEffect, useState } from 'react';
 
 import './App.css';
+
+import DOMPurify from 'dompurify';
 
 import { parseQuiz, shuffle } from './parseQuiz';
 
@@ -108,7 +109,9 @@ function ClarificationModal({ question, onClose }) {
         <div
           className='modal-clarification'
           /* Content source: self-authored quiz markdown, not user input */
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(question.clarification) }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(question.clarification),
+          }}
         />
         <button className='btn modal-btn' onClick={onClose}>
           Got it
@@ -148,7 +151,9 @@ function ExplanationModal({ question, onClose }) {
         <div
           className='modal-explanation'
           /* Content source: self-authored quiz markdown, not user input */
-          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(question.explanation) }}
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(question.explanation),
+          }}
         />
         <button className='btn modal-btn' onClick={onClose}>
           Got it
